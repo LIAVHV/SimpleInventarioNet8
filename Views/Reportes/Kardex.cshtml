@@ -1,0 +1,49 @@
+@model SimpleInventario.Web.Models.Paginar<KardexItemViewModel>
+@{
+    ViewData["Title"] = "Kardex";
+}
+<div class="page-heading">
+    <div>
+        <h2>Kardex de movimientos</h2><p>Detalle cronológico de entradas y salidas de inventario.</p>
+    </div><a asp-action="KardexCsv" asp-route-productoId="@ViewBag.ProductoId" asp-route-desde="@ViewBag.Desde" asp-route-hasta="@ViewBag.Hasta" class="btn btn-primary">↓ Exportar CSV</a>
+</div>
+<div class="panel">
+    <form method="get" class="filter-row mb-4 d-print-none">
+        <div style="min-width:220px"><label class="form-label">Producto</label><select name="productoId" asp-items="ViewBag.Productos" class="form-select"><option value="">Todos los productos</option></select></div>
+        <div><label class="form-label">Desde</label><input type="date" name="desde" value="@ViewBag.Desde" class="form-control" /></div>
+        <div><label class="form-label">Hasta</label><input type="date" name="hasta" value="@ViewBag.Hasta" class="form-control" /></div><button class="btn btn-primary">Aplicar filtros</button><a asp-action="Kardex" class="btn btn-outline-secondary">Limpiar</a><button type="button" onclick="window.print()" class="btn btn-outline-secondary">Imprimir</button>
+    </form><div asp-validation-summary="All" class="mb-2"></div><div class="table-responsive">
+        <table class="table table-responsive">
+            <thead><tr><th>FOLIO</th><th>FECHA</th><th>PRODUCTO</th><th>TIPO</th><th>UNIDAD</th><th class="text-end">PRECIO</th><th class="text-end">CANTIDAD</th><th class="text-end">IMPORTE</th></tr></thead>
+            <tbody>
+                @foreach (var x in Model)
+                {
+                    <tr>
+                        <td>@x.Folio</td>
+                        <td>@x.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="fw-semibold">@x.Nombre</td>
+                        <td>
+                            @if (x.Tipo == "Entrada")
+                            {
+                                <span class="badge-soft">Entrada</span>
+                            }
+                            else
+                            {
+
+                                <span class="badge-out">Salida</span>
+                            }
+                        </td>
+                        <td>@x.Unidad</td>
+                        <td class="text-end">@x.Precio.ToString("C2")</td>
+                        <td class="text-end">@x.Cantidad.ToString("N2")</td>
+                        <td class="text-end">@x.TotalImporte.ToString("C2")</td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="8"><div class="empty-state">No hay movimientos para los filtros seleccionados.</div></td></tr>
+                }
+            </tbody>
+        </table>
+    </div><div class="small text-muted mt-3">Movimientos en esta página: @Model.Count()</div>@await Html.PartialAsync("_Pagination", new PaginacionViewModel { PaginaIndice = Model.PaginaIndice, TotalPaginas = Model.TotalPaginas, ItemsPorPagina = Model.ItemsPorPagina, Modelo = "Kardex", Controlador = "Reportes", Accion = "Kardex", ProductoId = ViewBag.ProductoId, Desde = ViewBag.Desde, Hasta = ViewBag.Hasta })
+</div>

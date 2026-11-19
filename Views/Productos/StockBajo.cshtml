@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Productos>
+
+@{
+    ViewData["Title"] = "Productos por resurtir";
+}
+
+<div class="page-heading">
+    <div>
+        <h2>Productos por resurtir</h2>
+        <p>Productos que alcanzaron o están por debajo de su stock mínimo.</p>
+    </div>
+
+    <a asp-controller="Home"
+       asp-action="Index"
+       class="btn btn-outline-secondary">
+        Volver al Dashboard
+    </a>
+</div>
+
+<div class="panel">
+
+    <div class="d-flex justify-content-between mb-3">
+        <h5 class="fs-6 fw-bold">
+            Productos que requieren reabastecimiento
+        </h5>
+
+        <span class="badge-out">
+            Total: @Model.Count()
+        </span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>PRODUCTO</th>
+                    <th>UNIDAD</th>
+                    <th class="text-end">EXISTENCIA</th>
+                    <th class="text-end">STOCK MÍNIMO</th>
+                    <th class="text-end">STATUS</th>
+                    <th class="text-end">PRECIO COMPRA</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">
+                            @p.Nombre
+                        </td>
+
+                        <td>
+                            @p.Unidades?.Unidad
+                        </td>
+
+                        @if (p.Existencia == 0)
+                        {
+                            <td class="text-end text-danger">@p.Existencia.ToString("N2")</td>
+                        }
+                        else
+                        {
+                            <td class="text-end">@p.Existencia.ToString("N2")</td>
+                        }
+                        <td class="text-end">
+                            @p.StockMinimo.ToString("N2")
+                        </td>
+
+                        @if (p.StockMinimo > p.Existencia)
+                        {
+                            <td class="text-end">
+                            <span class="badge text-bg-danger">solicitar</span>
+                            </td>
+                        }
+                        else if (p.StockMinimo == p.Existencia)
+                        {
+                            <td class="text-end">
+                            <span class="badge text-bg-warning">al limite</span>
+                            </td>
+                        }
+                        <td class="text-end">
+                            @p.PrecioCompra.ToString("C2")
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                Todos los productos tienen existencia suficiente.
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

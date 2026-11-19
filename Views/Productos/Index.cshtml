@@ -1,0 +1,65 @@
+@model SimpleInventario.Web.Models.Paginar<Productos>
+@{
+    ViewData["Title"] = "Productos";
+}
+<div class="page-heading">
+    <div>
+        <h2>Catálogo de productos</h2>
+        <p>Consulta y administra los productos o servicios.</p>
+    </div><a asp-action="Create" class="btn btn-primary">＋ Nuevo producto</a>
+</div>
+<div class="panel">
+    <form method="get" class="d-flex gap-2 mb-3">
+        <input class="form-control search-box" name="q"
+               value="@ViewBag.Query" placeholder="Buscar producto..." /><button class="btn btn-outline-secondary">
+            Buscar
+        </button><a asp-action="Index"
+                    class="btn btn-outline-secondary">Limpiar</a>
+    </form>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>PRODUCTO</th>
+                    <th>UNIDAD</th>
+                    <th class="text-end">PRECIO</th>
+                    <th class="text-end">STOCK MINIMO</th>
+                    <th class="text-end">EXISTENCIA</th>
+                    <th class="text-end">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model)
+                {
+                    <tr>
+                        <td>@x.ProductosId</td>
+                        <td class="fw-semibold">@x.Nombre</td>
+                        <td>@x.Unidades?.Unidad</td>
+                        <td class="text-end">@x.Precio.ToString("C2")</td>
+                        <td class="text-end">@x.StockMinimo.ToString("N2")</td>
+                        <td class="text-end">@x.Existencia.ToString("N2")</td>
+                        <td>
+                            <div class="action-links justify-content-end">
+                                <a asp-action="Edit"
+                                   asp-route-id="@x.ProductosId">Editar</a><a asp-action="Delete"
+                                                                              asp-route-id="@x.ProductosId" class="text-danger">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">No hay productos registrados.</div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @await Html.PartialAsync("_Pagination", new PaginacionViewModel { PaginaIndice = Model.PaginaIndice,
+    TotalPaginas = Model.TotalPaginas, ItemsPorPagina = Model.ItemsPorPagina, Modelo = "Productos", Query =
+    ViewBag.Query })
+</div>

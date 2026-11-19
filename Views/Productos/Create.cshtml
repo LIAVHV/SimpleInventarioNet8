@@ -1,0 +1,56 @@
+@model Productos
+@{
+    ViewData["Title"] = "Nuevo producto";
+}
+<div class="page-heading">
+    <div>
+        <h2>Registrar producto</h2>
+        <p>El producto iniciará con precio y existencia en cero.</p>
+    </div><a asp-action="Index" class="btn btn-outline-secondary">← Regresar</a>
+</div>
+<div class="panel" style="max-width:700px">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label"></label><input asp-for="Nombre"
+                                                                      class="form-control" placeholder="Nombre del producto o servicio" /><span asp-validation-for="Nombre"
+                                                                                                                                                class="field-validation-error"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FkUnidadesId" class="form-label"></label><select asp-for="FkUnidadesId"
+                                                                             asp-items="ViewBag.Unidades" class="form-select">
+                <option value="">Selecciona una unidad</option>
+            </select><span asp-validation-for="FkUnidadesId" class="field-validation-error"></span>
+        </div>
+        <div class="info-strip">
+            El precio y las existencias se actualizan al registrar entradas y salidas. No se editan
+            directamente desde el catálogo.
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="StockMinimo" class="form-label"></label>
+
+            <input asp-for="StockMinimo"
+                   class="form-control"
+                   type="number"
+                   min="0"
+                   step="0.01"
+                   placeholder="Ej. 10.00" />
+
+            <span asp-validation-for="StockMinimo"
+                  class="field-validation-error"></span>
+
+            <small class="text-muted">
+                Se generará una alerta cuando la existencia
+                sea igual o menor a este valor.
+            </small>
+        </div>
+
+
+        <div class="form-actions">
+            <button class="btn btn-primary">Guardar producto</button><a asp-action="Index"
+                                                                        class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>

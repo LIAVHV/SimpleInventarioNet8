@@ -1,0 +1,4 @@
+@model Unidades
+@{ ViewData["Title"] = "Eliminar unidad"; }
+<div class="page-heading"><div><h2>Eliminar unidad</h2><p>Confirma la eliminación del registro.</p></div><a asp-action="Index" class="btn btn-outline-secondary">← Regresar</a></div>
+<div class="panel" style="max-width:650px"><div class="alert alert-warning">Si existen productos asociados, el sistema impedirá eliminar esta unidad.</div><p>¿Deseas eliminar la unidad <strong>@Model.Unidad</strong>?</p><form asp-action="Delete" method="post"><input type="hidden" name="id" value="@Model.UnidadesId"/><div class="form-actions"><button class="btn btn-danger" data-confirm="¿Eliminar esta unidad?">Eliminar</button><a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a></div></form></div>

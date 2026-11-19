@@ -1,0 +1,4 @@
+@model Unidades
+@{ ViewData["Title"] = "Editar unidad"; }
+<div class="page-heading"><div><h2>Editar unidad</h2><p>Modifica el nombre de la unidad de medida.</p></div><a asp-action="Index" class="btn btn-outline-secondary">← Regresar</a></div>
+<div class="panel" style="max-width:650px"><form asp-action="Edit" method="post"><input type="hidden" asp-for="UnidadesId"/><div asp-validation-summary="ModelOnly" class="mb-3"></div><label asp-for="Unidad" class="form-label"></label><input asp-for="Unidad" class="form-control"/><span asp-validation-for="Unidad" class="field-validation-error"></span><div class="form-actions"><button class="btn btn-primary">Guardar cambios</button><a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a></div></form></div>

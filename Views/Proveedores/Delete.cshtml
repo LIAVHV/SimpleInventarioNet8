@@ -1,0 +1,33 @@
+﻿@model Proveedores
+
+@{
+    ViewData["Title"] = "Eliminar proveedor";
+}
+
+<div class="panel" style="max-width:600px">
+    <h4>¿Eliminar este proveedor?</h4>
+
+    <p>
+        <strong>@Model.Nombre</strong>
+        <br />
+        Teléfono: @Model.Telefono
+    </p>
+
+    <div class="alert alert-warning">
+        No se podrá eliminar si tiene entradas relacionadas.
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="ProveedoresId" />
+
+        <button class="btn btn-danger">
+            Confirmar eliminación
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+            Cancelar
+        </a>
+    </form>
+</div>
+

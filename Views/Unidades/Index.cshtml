@@ -1,0 +1,13 @@
+@model SimpleInventario.Web.Models.Paginar<SimpleInventario.Web.Models.Unidades>
+@{ ViewData["Title"] = "Unidades"; }
+<div class="page-heading"><div><h2>Catálogo de unidades</h2><p>Administra las unidades de medida de tus productos.</p></div><a asp-action="Create" class="btn btn-primary">＋ Nueva unidad</a></div>
+<div class="panel"><form method="get" class="d-flex gap-2 mb-3"><input class="form-control search-box" name="q" value="@ViewBag.Query" placeholder="Buscar unidad..."/><button class="btn btn-outline-secondary">Buscar</button><a asp-action="Index" class="btn btn-outline-secondary">Limpiar</a></form>
+<div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>UNIDAD</th><th class="text-end">ACCIONES</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.UnidadesId</td><td class="fw-semibold">@x.Unidad</td><td><div class="action-links justify-content-end"><a asp-action="Edit" asp-route-id="@x.UnidadesId">Editar</a><a asp-action="Delete" asp-route-id="@x.UnidadesId" class="text-danger">Eliminar</a></div></td></tr>}@if(!Model.Any()){<tr><td colspan="3"><div class="empty-state">No hay unidades registradas.</div></td></tr>}</tbody></table></div></div>
+
+<!-- (Contenido anterior de la tabla) -->
+@await Html.PartialAsync("_Pagination", new PaginacionViewModel {
+    PaginaIndice = Model.PaginaIndice,
+    TotalPaginas = Model.TotalPaginas,
+    ItemsPorPagina = Model.ItemsPorPagina,
+    Modelo = "Unidades"
+})

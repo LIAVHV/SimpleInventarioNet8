@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Proveedores>
+
+@{
+    ViewData["Title"] = "Proveedores";
+}
+
+<div class="page-heading">
+    <div>
+        <h2>Catálogo de Proveedores</h2>
+        <p>Administración de proveedores y contactos.</p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        + Nuevo proveedor
+    </a>
+</div>
+
+<div class="panel">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>TELÉFONO</th>
+                    <th class="text-end">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.ProveedoresId</td>
+                        <td class="fw-semibold">@p.Nombre</td>
+                        <td>@p.Telefono</td>
+                        <td class="text-end">
+                            <a asp-action="Edit"
+                               asp-route-id="@p.ProveedoresId">Editar</a>
+                            |
+                            <a asp-action="Delete"
+                               asp-route-id="@p.ProveedoresId"
+                               class="text-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                No hay proveedores registrados.
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

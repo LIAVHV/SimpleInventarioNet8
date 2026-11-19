@@ -1,0 +1,82 @@
+@model SimpleInventario.Web.Models.Paginar<Entradas>
+@{
+    ViewData["Title"] = "Entradas";
+}
+<div class="page-heading">
+    <div>
+        <h2>Entradas de inventario</h2>
+        <p>Historial de ingresos de productos y servicios.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">＋ Registrar entrada</a>
+</div>
+<div class="panel">
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>FOLIO</th>
+                    <th>FECHA</th>
+                    <th>PRODUCTO</th>
+                    <th>PROVEEDOR</th>
+                    <th class="text-end">PRECIO COMPRA</th>
+                    <th class="text-end">PRECIO VENTA</th>
+                    <th class="text-end">CANTIDAD</th>
+                    <th class="text-end">IMPORTE</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var x in Model)
+                {
+                    <tr>
+                        <td>@x.EntradasId</td>
+
+                        <td>
+                            @x.Fecha.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+
+                        <td class="fw-semibold">
+                            @x.Productos?.Nombre
+                        </td>
+
+                        <td>
+                            @x.Proveedores?.Nombre
+                        </td>
+
+                        <td class="text-end">
+                            @x.Precio.ToString("C2")
+                        </td>
+
+                        <td class="text-end">
+                            @x.PrecioVenta.ToString("C2")
+                        </td>
+
+                        <td class="text-end">
+                            @x.Cantidad.ToString("N2")
+                        </td>
+
+                        <td class="text-end">
+                            @x.TotalImporte.ToString("C2")
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                No hay entradas registradas.
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    @await Html.PartialAsync("_Pagination", new PaginacionViewModel { PaginaIndice = Model.PaginaIndice, TotalPaginas = Model.TotalPaginas, ItemsPorPagina = Model.ItemsPorPagina, Modelo = "Entradas" })
+</div>
+
