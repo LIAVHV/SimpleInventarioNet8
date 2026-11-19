@@ -50,9 +50,6 @@ SimpleInventarioNet8/
 └── Program.cs         # Punto de entrada, configuración de servicios e inyección de dependencias
 ```
 
-### 2. `SimpleInventario.Tests` (Pruebas Unitarias)
-Proyecto dedicado a garantizar la calidad y el cumplimiento de reglas de validación en los modelos de datos (`ModelsValidationTests.cs`).
-
 ---
 
 ## 🛠️ Stack Tecnológico
@@ -60,7 +57,6 @@ Proyecto dedicado a garantizar la calidad y el cumplimiento de reglas de validac
 * **Framework:** .NET 8 (ASP.NET Core MVC)
 * **Acceso a Datos:** Entity Framework Core (`ApplicationDbContext`)
 * **Frontend:** Razor Views, HTML5, CSS3, JavaScript (con validación del lado del cliente mediante `_ValidationScriptsPartial.cshtml`)
-* **Pruebas:** Framework de pruebas unitarias para .NET (`SimpleInventario.Tests`)
 
 ---
 
@@ -82,10 +78,4 @@ Proyecto dedicado a garantizar la calidad y el cumplimiento de reglas de validac
    Inicia el servidor de desarrollo mediante la CLI de .NET o Visual Studio:
    ```bash
    dotnet run --project SimpleInventarioNet8/SimpleInventario.Web.csproj
-   ```
-
-5. **Ejecutar las pruebas unitarias:**
-   Para validar el correcto funcionamiento de los modelos:
-   ```bash
-   dotnet test SimpleInventarioNet8.Tests/SimpleInventario.Tests.csproj
    ```
