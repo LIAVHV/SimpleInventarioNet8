@@ -34,6 +34,51 @@
 .pagination-size-form .btn {
     white-space: nowrap;
 }
+
+
+/* Dropdown principal */
+.nav-link.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+/* Menú desplegable */
+.nav-link + .dropdown-menu,
+.dropdown-menu {
+    background-color: #212529;
+    border: none;
+    border-radius: 6px;
+    padding: 5px;
+    margin-left: 10px;
+    width: calc(100% - 10px);
+}
+
+/* Elementos del dropdown */
+.dropdown-item {
+    color: #adb5bd;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+    .dropdown-item:hover {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+/* Flecha del dropdown */
+.nav-link.dropdown-toggle::after {
+    margin-left: auto;
+}
+
+/* Separación entre grupos */
+.dropdown {
+    margin-bottom: 5px;
+}
+
+
 @media (max-width: 576px) {
     .pagination-container {
         justify-content: center !important;

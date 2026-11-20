@@ -11,22 +11,101 @@
 <body>
     <div class="app-shell">
         <aside class="sidebar d-print-none">
+
             <a class="brand" asp-controller="Home" asp-action="Index"><span class="brand-mark">SI</span><span>SimpleInventario<small>CONTROL DE INVENTARIO</small></span></a>
             <div class="nav-caption">GENERAL</div>
             <a class="nav-link" asp-controller="Home" asp-action="Index">▦ <span>Dashboard</span></a>
-            <div class="nav-caption">CATÁLOGOS</div>
-            <a class="nav-link" asp-controller="Unidades" asp-action="Index">◫ <span>Unidades</span></a>
-            <a class="nav-link" asp-controller="Proveedores" asp-action="Index"> ◉ <span>Proveedores</span>
-            <a class="nav-link" asp-controller="Productos" asp-action="Index">▤ <span>Productos</span></a>
-            </a>
 
-            <div class="nav-caption">MOVIMIENTOS</div>
-            <a class="nav-link" asp-controller="Entradas" asp-action="Index">↓ <span>Entradas</span></a>
-            <a class="nav-link" asp-controller="Salidas" asp-action="Index">↑ <span>Salidas</span></a>
-            <div class="nav-caption">CONSULTAS</div>
-            <a class="nav-link" asp-controller="Productos" asp-action="SinExistencia">▥ <span>Sin Existencias</span></a>
-            <a class="nav-link" asp-controller="Reportes" asp-action="Existencias">▥ <span>Existencias</span></a>
-            <a class="nav-link" asp-controller="Reportes" asp-action="Kardex">☷ <span>Kardex</span></a>
+            <div class="nav-caption">MENÚ PRINCIPAL</div>
+
+            <!-- CATÁLOGOS -->
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    📁 <span>Catálogos</span>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" asp-controller="Unidades" asp-action="Index">
+                            ◫ <span>Unidades</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-controller="Proveedores" asp-action="Index">
+                            ◉ <span>Proveedores</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-controller="Productos" asp-action="Index">
+                            ▤ <span>Productos</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MOVIMIENTOS -->
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    📦 <span>Movimientos</span>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" asp-controller="Entradas" asp-action="Index">
+                            ↓ <span>Entradas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-controller="Salidas" asp-action="Index">
+                            ↑ <span>Salidas</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- CONSULTAS -->
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    📊 <span>Consultas</span>
+                </a>
+
+                <ul class="dropdown-menu">
+                  
+                    <li>
+                        <a class="dropdown-item" asp-controller="Reportes" asp-action="Existencias">
+                            ▥ <span>Existencias</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-controller="Reportes" asp-action="Kardex">
+                            ☷ <span>Kardex</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-controller="Productos" asp-action="SinExistencia">
+                            ▥ <span>Sin Existencias</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" asp-controller="Productos" asp-action="StockBajo">
+                            ▥ <span>Stock Bajo</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
             <div class="sidebar-footer">Sistema de inventario<br /><span>ASP.NET Core MVC · .NET 8</span></div>
         </aside>
         <main class="main-area">

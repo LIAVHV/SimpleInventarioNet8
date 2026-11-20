@@ -12,19 +12,18 @@
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="mb-3"></div>
         <div class="mb-3">
-            <label asp-for="Nombre" class="form-label"></label><input asp-for="Nombre"
-                                                                      class="form-control" placeholder="Nombre del producto o servicio" /><span asp-validation-for="Nombre"
-                                                                                                                                                class="field-validation-error"></span>
+            <div class="info-strip">
+                El precio y las existencias se actualizan al registrar entradas y salidas. No se editan
+                directamente desde el catálogo.
+            </div>
+            <label asp-for="Nombre" class="form-label"></label>
+            <input asp-for="Nombre" class="form-control" placeholder="Nombre del producto o servicio" /><span asp-validation-for="Nombre"
+                                                                                                                                                                 class="field-validation-error"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="FkUnidadesId" class="form-label"></label><select asp-for="FkUnidadesId"
-                                                                             asp-items="ViewBag.Unidades" class="form-select">
+            <label asp-for="FkUnidadesId" class="form-label"></label><select asp-for="FkUnidadesId" asp-items="ViewBag.Unidades" class="form-select">
                 <option value="">Selecciona una unidad</option>
             </select><span asp-validation-for="FkUnidadesId" class="field-validation-error"></span>
-        </div>
-        <div class="info-strip">
-            El precio y las existencias se actualizan al registrar entradas y salidas. No se editan
-            directamente desde el catálogo.
         </div>
 
 
