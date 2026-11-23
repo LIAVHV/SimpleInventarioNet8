@@ -10,9 +10,7 @@
         <p>Administración de proveedores y contactos.</p>
     </div>
 
-    <a asp-action="Create" class="btn btn-primary">
-        + Nuevo proveedor
-    </a>
+    <a asp-action="Create" class="btn btn-primary"> + Nuevo proveedor </a>
 </div>
 
 <div class="panel">
@@ -34,12 +32,9 @@
                         <td class="fw-semibold">@p.Nombre</td>
                         <td>@p.Telefono</td>
                         <td class="text-end">
-                            <a asp-action="Edit"
-                               asp-route-id="@p.ProveedoresId">Editar</a>
+                            <a asp-action="Edit" asp-route-id="@p.ProveedoresId">Editar</a>
                             |
-                            <a asp-action="Delete"
-                               asp-route-id="@p.ProveedoresId"
-                               class="text-danger">Eliminar</a>
+                            <a asp-action="Delete" asp-route-id="@p.ProveedoresId" class="text-danger">Eliminar</a>
                         </td>
                     </tr>
                 }

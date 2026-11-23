@@ -6,7 +6,9 @@ namespace SimpleInventario.Web.Models;
 [Table("Unidades")]
 public class Unidades
 {
-    [Key] public int UnidadesId { get; set; }
+    [Key] 
+    public int UnidadesId { get; set; }
+    
     [Required(ErrorMessage = "La unidad es obligatoria.")]
     [StringLength(50, ErrorMessage = "La unidad admite máximo 50 caracteres.")]
     [Display(Name = "Unidad de medida")]

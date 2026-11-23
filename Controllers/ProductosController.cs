@@ -17,10 +17,14 @@ public class ProductosController(ApplicationDbContext db, ILogger<ProductosContr
         var query = db.Productos.AsNoTracking().Include(x => x.Unidades).AsQueryable();
         if (!string.IsNullOrWhiteSpace(q)) query = query.Where(x => x.Nombre.Contains(q.Trim()));
         ViewBag.Query = q;
-        var resultado = await Paginar<Productos>.PaginarEntidad(query.OrderBy(x => x.Nombre), pageIndex, itemsPorPagina, ct);
+        var resultado = await Paginar<Productos>.PaginarEntidad(query.OrderBy(x => x.Nombre), pageIndex ?? 1, itemsPorPagina ?? 10, ct);
         return View(resultado);
     }
-    public async Task<IActionResult> Create(CancellationToken ct) { await CargarUnidades(null, ct); return View(new Productos()); }
+    public async Task<IActionResult> Create(CancellationToken ct)
+    {
+        await CargarUnidades(null, ct); return View(new Productos());
+    }
+
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Nombre,FkUnidadesId,StockMinimo")] Productos model, CancellationToken ct)
     {
@@ -38,7 +42,9 @@ public class ProductosController(ApplicationDbContext db, ILogger<ProductosContr
     }
     public async Task<IActionResult> Edit(int id, CancellationToken ct)
     {
-        var item = await db.Productos.FindAsync(new object?[] { id }, ct); if (item is null) return NotFound(); await CargarUnidades(item.FkUnidadesId, ct); return View(item);
+        var item = await db.Productos.FindAsync(new object?[] { id }, ct);
+        if (item is null) return NotFound();
+        await CargarUnidades(item.FkUnidadesId, ct); return View(item);
     }
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("ProductosId,Nombre,FkUnidadesId,StockMinimo")] Productos model, CancellationToken ct)
@@ -48,12 +54,18 @@ public class ProductosController(ApplicationDbContext db, ILogger<ProductosContr
         if (await db.Productos.AnyAsync(x => x.ProductosId != id && x.Nombre == model.Nombre, ct)) ModelState.AddModelError(nameof(model.Nombre), "Ya existe un producto con ese nombre.");
         if (!ModelState.IsValid) { await CargarUnidades(model.FkUnidadesId, ct); return View(model); }
         var entity = await db.Productos.FindAsync(new object?[] { id }, ct); if (entity is null) return NotFound();
-        entity.Nombre = model.Nombre; 
+        entity.Nombre = model.Nombre;
         entity.FkUnidadesId = model.FkUnidadesId;
         entity.StockMinimo = model.StockMinimo;
 
-        try { await db.SaveChangesAsync(ct); TempData["Success"] = "Producto actualizado."; return RedirectToAction(nameof(Index)); }
-        catch (DbUpdateException ex) { logger.LogWarning(ex, "Error al editar producto {Id}", id); ModelState.AddModelError(nameof(model.Nombre), "No fue posible guardar; revisa el nombre."); await CargarUnidades(model.FkUnidadesId, ct); return View(model); }
+        try
+        {
+            await db.SaveChangesAsync(ct); TempData["Success"] = "Producto actualizado."; return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            logger.LogWarning(ex, "Error al editar producto {Id}", id); ModelState.AddModelError(nameof(model.Nombre), "No fue posible guardar; revisa el nombre."); await CargarUnidades(model.FkUnidadesId, ct); return View(model);
+        }
     }
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
@@ -64,12 +76,17 @@ public class ProductosController(ApplicationDbContext db, ILogger<ProductosContr
     {
         var item = await db.Productos.FindAsync(new object?[] { id }, ct); if (item is null) return NotFound();
         if (await db.Entradas.AnyAsync(x => x.FKProductosId == id, ct) || await db.Salidas.AnyAsync(x => x.FKProductosId == id, ct))
-        { TempData["Error"] = "No se puede eliminar: el producto tiene movimientos registrados."; return RedirectToAction(nameof(Index)); }
-        db.Productos.Remove(item); await db.SaveChangesAsync(ct); TempData["Success"] = "Producto eliminado."; return RedirectToAction(nameof(Index));
+        {
+            TempData["Error"] = "No se puede eliminar: el producto tiene movimientos registrados."; return RedirectToAction(nameof(Index));
+        }
+        db.Productos.Remove(item);
+        await db.SaveChangesAsync(ct);
+        TempData["Success"] = "Producto eliminado.";
+        return RedirectToAction(nameof(Index));
     }
+
     [HttpGet]
-    [HttpGet]
-    public async Task<IActionResult> Datos(int id,CancellationToken ct)
+    public async Task<IActionResult> Datos(int id, CancellationToken ct)
     {
         var producto = await db.Productos
             .AsNoTracking()
@@ -86,7 +103,7 @@ public class ProductosController(ApplicationDbContext db, ILogger<ProductosContr
     }
 
 
-    public async Task<IActionResult> SinExistencia(string? q,int? pageIndex,int? itemsPorPagina,CancellationToken ct)
+    public async Task<IActionResult> SinExistencia(string? q, int? pageIndex, int? itemsPorPagina, CancellationToken ct)
     {
         var query = db.Productos
             .AsNoTracking()
@@ -105,11 +122,7 @@ public class ProductosController(ApplicationDbContext db, ILogger<ProductosContr
 
         // Aplicar paginación
         var resultado = await Paginar<Productos>
-            .PaginarEntidad(
-                query.OrderBy(p => p.Nombre),
-                pageIndex,
-                itemsPorPagina,
-                ct);
+            .PaginarEntidad(query.OrderBy(p => p.Nombre), pageIndex, itemsPorPagina, ct);
 
         return View(resultado);
     }

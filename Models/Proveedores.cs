@@ -20,7 +20,6 @@ public class Proveedores
     [Display(Name = "Teléfono de contacto")]
     public string Telefono { get; set; } = string.Empty;
 
-    public ICollection<Entradas> Entradas { get; set; }
-        = new List<Entradas>();
+    public ICollection<Entradas> Entradas { get; set; } = new List<Entradas>();
 }
 

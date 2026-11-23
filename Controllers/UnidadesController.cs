@@ -21,6 +21,7 @@ public class UnidadesController(ApplicationDbContext db, ILogger<UnidadesControl
         return View(resPag);
     }
     public IActionResult Create() => View(new Unidades());
+
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Unidad")] Unidades model, CancellationToken ct)
     {
@@ -28,13 +29,24 @@ public class UnidadesController(ApplicationDbContext db, ILogger<UnidadesControl
         if (await db.Unidades.AnyAsync(x => x.Unidad == model.Unidad, ct)) ModelState.AddModelError(nameof(model.Unidad), "La unidad ya existe.");
         if (!ModelState.IsValid) return View(model);
         db.Unidades.Add(model);
-        try { await db.SaveChangesAsync(ct); TempData["Success"] = "Unidad registrada."; return RedirectToAction(nameof(Index)); }
-        catch (DbUpdateException ex) { logger.LogWarning(ex, "Unidad duplicada o restricción al guardar."); ModelState.AddModelError(nameof(model.Unidad), "No fue posible guardar la unidad; verifica que no esté duplicada."); return View(model); }
+        try
+        {
+            await db.SaveChangesAsync(ct);
+            TempData["Success"] = "Unidad registrada.";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            logger.LogWarning(ex, "Unidad duplicada o restricción al guardar.");
+            ModelState.AddModelError(nameof(model.Unidad), "No fue posible guardar la unidad; verifica que no esté duplicada.");
+            return View(model);
+        }
     }
     public async Task<IActionResult> Edit(int id, CancellationToken ct)
     {
         var item = await db.Unidades.FindAsync(new object?[] { id }, ct); return item is null ? NotFound() : View(item);
     }
+
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("UnidadesId,Unidad")] Unidades model, CancellationToken ct)
     {
@@ -45,8 +57,18 @@ public class UnidadesController(ApplicationDbContext db, ILogger<UnidadesControl
         if (!ModelState.IsValid) return View(model);
         var entity = await db.Unidades.FindAsync(new object?[] { id }, ct); if (entity is null) return NotFound();
         entity.Unidad = model.Unidad;
-        try { await db.SaveChangesAsync(ct); TempData["Success"] = "Unidad actualizada."; return RedirectToAction(nameof(Index)); }
-        catch (DbUpdateException ex) { logger.LogWarning(ex, "No se pudo actualizar unidad {Id}", id); ModelState.AddModelError(nameof(model.Unidad), "La unidad ya existe o está relacionada."); return View(model); }
+        try
+        {
+            await db.SaveChangesAsync(ct);
+            TempData["Success"] = "Unidad actualizada.";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateException ex)
+        {
+            logger.LogWarning(ex, "No se pudo actualizar unidad {Id}", id);
+            ModelState.AddModelError(nameof(model.Unidad), "La unidad ya existe o está relacionada.");
+            return View(model);
+        }
     }
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
@@ -56,8 +78,16 @@ public class UnidadesController(ApplicationDbContext db, ILogger<UnidadesControl
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken ct)
     {
-        var item = await db.Unidades.FindAsync(new object?[] { id }, ct); if (item is null) return NotFound();
-        if (await db.Productos.AnyAsync(x => x.FkUnidadesId == id, ct)) { TempData["Error"] = "No se puede eliminar: existen productos asociados a esta unidad."; return RedirectToAction(nameof(Index)); }
-        db.Unidades.Remove(item); await db.SaveChangesAsync(ct); TempData["Success"] = "Unidad eliminada."; return RedirectToAction(nameof(Index));
+        var item = await db.Unidades.FindAsync(new object?[] { id }, ct);
+        if (item is null) return NotFound();
+        if (await db.Productos.AnyAsync(x => x.FkUnidadesId == id, ct))
+        {
+            TempData["Error"] = "No se puede eliminar: existen productos asociados a esta unidad.";
+            return RedirectToAction(nameof(Index));
+        }
+        db.Unidades.Remove(item);
+        await db.SaveChangesAsync(ct);
+        TempData["Success"] = "Unidad eliminada.";
+        return RedirectToAction(nameof(Index));
     }
 }

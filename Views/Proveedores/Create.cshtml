@@ -17,28 +17,23 @@
 <div class="panel" style="max-width:700px">
     <form asp-action="Create" method="post">
 
-        <div asp-validation-summary="ModelOnly"
-             class="mb-3"></div>
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
 
         <div class="mb-3">
             <label asp-for="Nombre" class="form-label"></label>
             <input asp-for="Nombre" class="form-control" />
-            <span asp-validation-for="Nombre"
-                  class="field-validation-error"></span>
+            <span asp-validation-for="Nombre" class="field-validation-error"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="Telefono" class="form-label"></label>
-            <input asp-for="Telefono" class="form-control"
-                   type="tel" />
-            <span asp-validation-for="Telefono"
-                  class="field-validation-error"></span>
+            <input asp-for="Telefono" class="form-control" type="tel" />
+            <span asp-validation-for="Telefono" class="field-validation-error"></span>
         </div>
 
         <div class="form-actions">
             <button class="btn btn-primary">Guardar</button>
-            <a asp-action="Index"
-               class="btn btn-outline-secondary">Cancelar</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
         </div>
     </form>
 </div>

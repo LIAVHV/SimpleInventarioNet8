@@ -17,11 +17,11 @@ public class EntradasController(ApplicationDbContext db, IInventarioService inve
 
     public async Task<IActionResult> Index(int? pageIndex, int? itemsPorPagina, CancellationToken ct)
     {
-        var query = db.Entradas.AsNoTracking().Include(x => x.Productos).Include(x=>x.Proveedores);
+        var query = db.Entradas.AsNoTracking().Include(x => x.Productos).Include(x => x.Proveedores);
         var resultado = await Paginar<Entradas>.PaginarEntidad(query.OrderByDescending(x => x.Fecha).ThenByDescending(x => x.EntradasId), pageIndex ?? 1, itemsPorPagina ?? 10, ct);
         return View(resultado);
     }
-   
+
 
     public async Task<IActionResult> Create(CancellationToken ct)
     {
@@ -34,11 +34,13 @@ public class EntradasController(ApplicationDbContext db, IInventarioService inve
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(EntradaViewModel model, CancellationToken ct)
     {
-        if (!ModelState.IsValid) {
+        if (!ModelState.IsValid)
+        {
             await CargarProductos(model.ProductoId, ct);
             await CargarProveedores(model.ProveedorId, ct);
 
-            return View(model); }
+            return View(model);
+        }
         try
         {
             var result = await inventario.RegistrarEntradaAsync(model, ct);

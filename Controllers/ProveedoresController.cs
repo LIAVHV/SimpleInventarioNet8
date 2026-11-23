@@ -16,7 +16,6 @@ public class ProveedoresController(
             .AsNoTracking()
             .OrderBy(x => x.Nombre)
             .ToListAsync(ct);
-
         return View(proveedores);
     }
 
@@ -50,39 +49,26 @@ public class ProveedoresController(
         try
         {
             await db.SaveChangesAsync(ct);
-
             TempData["Success"] = "Proveedor registrado.";
-
             return RedirectToAction(nameof(Index));
         }
         catch (DbUpdateException ex)
         {
             logger.LogError(ex, "Error al registrar proveedor.");
-
-            ModelState.AddModelError(
-                string.Empty,
-                "No fue posible registrar el proveedor.");
-
+            ModelState.AddModelError(string.Empty, "No fue posible registrar el proveedor.");
             return View(model);
         }
     }
 
-    public async Task<IActionResult> Edit(
-        int id,
-        CancellationToken ct)
+    public async Task<IActionResult> Edit(int id, CancellationToken ct)
     {
-        var proveedor = await db.Proveedores.FindAsync(
-            new object?[] { id }, ct);
-
+        var proveedor = await db.Proveedores.FindAsync(new object?[] { id }, ct);
         return proveedor is null ? NotFound() : View(proveedor);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(
-        int id,
-        Proveedores model,
-        CancellationToken ct)
+    public async Task<IActionResult> Edit(int id, Proveedores model, CancellationToken ct)
     {
         if (id != model.ProveedoresId)
             return BadRequest();
@@ -90,20 +76,15 @@ public class ProveedoresController(
         model.Nombre = Normalizar(model.Nombre);
         model.Telefono = model.Telefono.Trim();
 
-        if (await db.Proveedores.AnyAsync(
-            x => x.ProveedoresId != id &&
-                 x.Nombre == model.Nombre, ct))
+        if (await db.Proveedores.AnyAsync(x => x.ProveedoresId != id && x.Nombre == model.Nombre, ct))
         {
-            ModelState.AddModelError(
-                nameof(model.Nombre),
-                "Ya existe un proveedor con ese nombre.");
+            ModelState.AddModelError(nameof(model.Nombre), "Ya existe un proveedor con ese nombre.");
         }
 
         if (!ModelState.IsValid)
             return View(model);
 
-        var entity = await db.Proveedores.FindAsync(
-            new object?[] { id }, ct);
+        var entity = await db.Proveedores.FindAsync(new object?[] { id }, ct);
 
         if (entity is null)
             return NotFound();
@@ -114,61 +95,40 @@ public class ProveedoresController(
         try
         {
             await db.SaveChangesAsync(ct);
-
             TempData["Success"] = "Proveedor actualizado.";
-
             return RedirectToAction(nameof(Index));
         }
         catch (DbUpdateException ex)
         {
             logger.LogError(ex, "Error al actualizar proveedor {Id}", id);
-
-            ModelState.AddModelError(
-                string.Empty,
-                "No fue posible actualizar el proveedor.");
-
+            ModelState.AddModelError(string.Empty, "No fue posible actualizar el proveedor.");
             return View(model);
         }
     }
 
-    public async Task<IActionResult> Delete(
-        int id,
-        CancellationToken ct)
+    public async Task<IActionResult> Delete( int id, CancellationToken ct)
     {
         var proveedor = await db.Proveedores
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ProveedoresId == id, ct);
-
         return proveedor is null ? NotFound() : View(proveedor);
     }
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(
-        int id,
-        CancellationToken ct)
+    public async Task<IActionResult> DeleteConfirmed( int id, CancellationToken ct)
     {
-        var proveedor = await db.Proveedores.FindAsync(
-            new object?[] { id }, ct);
-
+        var proveedor = await db.Proveedores.FindAsync( new object?[] { id }, ct);
         if (proveedor is null)
             return NotFound();
-
-        if (await db.Entradas.AnyAsync(
-            x => x.FKProveedorId == id, ct))
+        if (await db.Entradas.AnyAsync( x => x.FKProveedorId == id, ct))
         {
-            TempData["Error"] =
-                "No se puede eliminar: el proveedor tiene entradas registradas.";
-
+            TempData["Error"] = "No se puede eliminar: el proveedor tiene entradas registradas.";
             return RedirectToAction(nameof(Index));
         }
-
         db.Proveedores.Remove(proveedor);
-
         await db.SaveChangesAsync(ct);
-
         TempData["Success"] = "Proveedor eliminado.";
-
         return RedirectToAction(nameof(Index));
     }
 

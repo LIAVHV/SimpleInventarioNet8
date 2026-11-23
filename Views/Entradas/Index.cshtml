@@ -7,7 +7,7 @@
         <h2>Entradas de inventario</h2>
         <p>Historial de ingresos de productos y servicios.</p>
     </div>
-    <a asp-action="Create" class="btn btn-primary">＋ Registrar entrada</a>
+    <a asp-action="Create" class="btn btn-primary">+ Registrar entrada</a>
 </div>
 <div class="panel">
 
@@ -77,6 +77,12 @@
     </div>
 
 
-    @await Html.PartialAsync("_Pagination", new PaginacionViewModel { PaginaIndice = Model.PaginaIndice, TotalPaginas = Model.TotalPaginas, ItemsPorPagina = Model.ItemsPorPagina, Modelo = "Entradas" })
+    @await Html.PartialAsync("_Pagination", new PaginacionViewModel
+    {
+        PaginaIndice = Model.PaginaIndice,
+        TotalPaginas = Model.TotalPaginas,
+        ItemsPorPagina = Model.ItemsPorPagina,
+        Modelo = "Entradas"
+    })
 </div>
 

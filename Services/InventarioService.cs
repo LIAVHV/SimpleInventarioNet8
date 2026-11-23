@@ -8,7 +8,7 @@ namespace SimpleInventario.Web.Services;
 public class InventarioService(ApplicationDbContext db, ILogger<InventarioService> logger) : IInventarioService
 {
 
-    public async Task<(bool Ok, string Mensaje, decimal Existencia)>RegistrarEntradaAsync(EntradaViewModel model,CancellationToken ct = default)
+    public async Task<(bool Ok, string Mensaje, decimal Existencia)> RegistrarEntradaAsync(EntradaViewModel model, CancellationToken ct = default)
     {
         if (model.Precio <= 0 || model.PrecioVenta <= 0 || model.Cantidad <= 0)
         {
@@ -22,9 +22,7 @@ public class InventarioService(ApplicationDbContext db, ILogger<InventarioServic
             return (false, "Selecciona un proveedor válido.", 0);
         }
 
-        await using var tx =
-            await db.Database.BeginTransactionAsync(ct);
-
+        await using var tx = await db.Database.BeginTransactionAsync(ct);
         try
         {
             var affected = await db.Database.ExecuteSqlInterpolatedAsync($@"
@@ -37,7 +35,6 @@ public class InventarioService(ApplicationDbContext db, ILogger<InventarioServic
             if (affected == 0)
             {
                 await tx.RollbackAsync(ct);
-
                 return (false, "El producto no existe.", 0);
             }
 
@@ -59,27 +56,18 @@ public class InventarioService(ApplicationDbContext db, ILogger<InventarioServic
             });
 
             await db.SaveChangesAsync(ct);
-
             await tx.CommitAsync(ct);
-
             return (true, "La entrada se registró correctamente.", existencia);
         }
         catch (Exception ex)
         {
             await tx.RollbackAsync(ct);
-
-            logger.LogError(ex,
-                "Error al registrar entrada para producto {ProductoId}",
-                model.ProductoId);
-
+            logger.LogError(ex, "Error al registrar entrada para producto {ProductoId}", model.ProductoId);
             throw;
         }
     }
 
-    public async Task<(bool Ok, string Mensaje, decimal Existencia)>
-        RegistrarSalidaAsync(
-            SalidaViewModel model,
-            CancellationToken ct = default)
+    public async Task<(bool Ok, string Mensaje, decimal Existencia)> RegistrarSalidaAsync(SalidaViewModel model, CancellationToken ct = default)
     {
         if (model.Cantidad <= 0 || model.PrecioVenta <= 0)
             return (false, "El precio y la cantidad deben ser mayores que cero.", 0);
@@ -102,12 +90,7 @@ public class InventarioService(ApplicationDbContext db, ILogger<InventarioServic
 
                 await tx.RollbackAsync(ct);
 
-                return (
-                    false,
-                    exists
-                        ? "No existe stock suficiente para realizar la salida."
-                        : "El producto seleccionado no existe.",
-                    0);
+                return ( false, exists ? "No existe stock suficiente para realizar la salida." : "El producto seleccionado no existe.", 0);
             }
 
             var existencia = await db.Productos
@@ -126,19 +109,13 @@ public class InventarioService(ApplicationDbContext db, ILogger<InventarioServic
             });
 
             await db.SaveChangesAsync(ct);
-
             await tx.CommitAsync(ct);
-
             return (true, "La salida se registró correctamente.", existencia);
         }
         catch (Exception ex)
         {
             await tx.RollbackAsync(ct);
-
-            logger.LogError(ex,
-                "Error al registrar salida para producto {ProductoId}",
-                model.ProductoId);
-
+            logger.LogError(ex, "Error al registrar salida para producto {ProductoId}", model.ProductoId);
             throw;
         }
     }

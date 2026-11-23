@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SimpleInventario.Web.Data;
 using SimpleInventario.Web.ViewModels;
-using SimpleInventario.Web.Services;
 
 namespace SimpleInventario.Web.Controllers;
 
@@ -19,7 +18,7 @@ public class HomeController(ApplicationDbContext db) : Controller
             TotalEntradas = await db.Entradas.CountAsync(ct),
             TotalSalidas = await db.Salidas.CountAsync(ct),
             TotalProductosSinExistencia = await db.Productos.CountAsync(p => p.Existencia <= 0, ct),
-            TotalProductosPorResurtir = await db.Productos.CountAsync(p => p.StockMinimo > 0 &&p.Existencia <= p.StockMinimo,ct)
+            TotalProductosPorResurtir = await db.Productos.CountAsync(p => p.StockMinimo > 0 && p.Existencia <= p.StockMinimo, ct)
         };
         return View(model);
     }

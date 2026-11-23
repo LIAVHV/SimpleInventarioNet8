@@ -1,4 +1,62 @@
 @model SimpleInventario.Web.Models.Paginar<Productos>
-@{ ViewData["Title"] = "Existencias"; }
-<div class="page-heading"><div><h2>Reporte de existencias</h2><p>Existencia actual por producto y unidad de medida.</p></div><a asp-action="ExistenciasCsv" class="btn btn-primary">↓ Exportar CSV</a></div>
-<div class="panel"><form method="get" class="d-flex gap-2 mb-3"><input class="form-control search-box" name="q" value="@ViewBag.Query" placeholder="Buscar producto..."/><button class="btn btn-outline-secondary">Buscar</button><a asp-action="Existencias" class="btn btn-outline-secondary">Limpiar</a><button type="button" onclick="window.print()" class="btn btn-outline-secondary">Imprimir</button></form><div class="table-responsive"><table class="table"><thead><tr><th>ID</th><th>PRODUCTO</th><th>UNIDAD</th><th class="text-end">PRECIO</th><th class="text-end">EXISTENCIA</th><th class="text-end">VALOR</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.ProductosId</td><td class="fw-semibold">@x.Nombre</td><td>@x.Unidades?.Unidad</td><td class="text-end">@x.Precio.ToString("C2")</td><td class="text-end">@x.Existencia.ToString("N2")</td><td class="text-end">@((x.Precio*x.Existencia).ToString("C2"))</td></tr>}@if(!Model.Any()){<tr><td colspan="6"><div class="empty-state">No hay productos para mostrar.</div></td></tr>}</tbody></table></div><div class="small text-muted mt-3">Productos en esta página: @Model.Count()</div>@await Html.PartialAsync("_Pagination", new PaginacionViewModel { PaginaIndice = Model.PaginaIndice, TotalPaginas = Model.TotalPaginas, ItemsPorPagina = Model.ItemsPorPagina, Modelo = "Existencias", Controlador = "Reportes", Accion = "Existencias", Query = ViewBag.Query })</div>
+@{
+    ViewData["Title"] = "Existencias";
+}
+<div class="page-heading">
+    <div>
+        <h2>Reporte de existencias</h2>
+        <p>Existencia actual por producto y unidad de medida.</p>
+    </div><a asp-action="ExistenciasCsv" class="btn btn-primary">↓ Exportar CSV</a>
+</div>
+<div class="panel">
+    <form method="get" class="d-flex gap-2 mb-3"><input class="form-control search-box" name="q" value="@ViewBag.Query"
+                                                            placeholder="Buscar producto..." />
+        <button class="btn btn-outline-secondary">Buscar</button>
+        <a asp-action="Existencias" class="btn btn-outline-secondary">Limpiar</a>
+        <button type="button" onclick="window.print()" class="btn btn-outline-secondary">Imprimir</button>
+    </form>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>PRODUCTO</th>
+                    <th>UNIDAD</th>
+                    <th class="text-end">PRECIO</th>
+                    <th class="text-end">EXISTENCIA</th>
+                    <th class="text-end">VALOR</th>
+                </tr>
+            </thead>
+            <tbody>@foreach(var x in Model){
+                <tr>
+                    <td>@x.ProductosId</td>
+                    <td class="fw-semibold">@x.Nombre</td>
+                    <td>@x.Unidades?.Unidad</td>
+                    <td class="text-end">@x.Precio.ToString("C2")</td>
+                    <td class="text-end">@x.Existencia.ToString("N2")</td>
+                    <td class="text-end">@((x.Precio * x.Existencia).ToString("C2"))</td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">No hay productos para mostrar.</div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="small text-muted mt-3">Productos en esta página: @Model.Count()</div>
+@await Html.PartialAsync("_Pagination", new PaginacionViewModel
+{
+    PaginaIndice = Model.PaginaIndice,
+    TotalPaginas = Model.TotalPaginas,
+    ItemsPorPagina = Model.ItemsPorPagina,
+    Modelo = "Existencias",
+    Controlador = "Reportes",
+    Accion = "Existencias",
+    Query = ViewBag.Query
+})
+</div>

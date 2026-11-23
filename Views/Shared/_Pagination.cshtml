@@ -1,13 +1,46 @@
 @model SimpleInventario.Web.Models.PaginacionViewModel
 @{
     var controller = Model.Controlador ?? Model.Modelo;
-    var firstUrl = Url.Action(Model.Accion, controller, new { pageIndex = 1, itemsPorPagina = Model.ItemsPorPagina, q = Model.Query, productoId = Model.ProductoId, desde = Model.Desde, hasta = Model.Hasta });
-    var previousUrl = Url.Action(Model.Accion, controller, new { pageIndex = Math.Max(1, Model.PaginaIndice - 1), itemsPorPagina = Model.ItemsPorPagina, q = Model.Query, productoId = Model.ProductoId, desde = Model.Desde, hasta = Model.Hasta });
-    var nextUrl = Url.Action(Model.Accion, controller, new { pageIndex = Math.Min(Model.TotalPaginas, Model.PaginaIndice + 1), itemsPorPagina = Model.ItemsPorPagina, q = Model.Query, productoId = Model.ProductoId, desde = Model.Desde, hasta = Model.Hasta });
-    var lastUrl = Url.Action(Model.Accion, controller, new { pageIndex = Math.Max(1, Model.TotalPaginas), itemsPorPagina = Model.ItemsPorPagina, q = Model.Query, productoId = Model.ProductoId, desde = Model.Desde, hasta = Model.Hasta });
+    var firstUrl = Url.Action(Model.Accion, controller, new
+    {
+        pageIndex = 1,
+        itemsPorPagina = Model.ItemsPorPagina,
+        q = Model.Query,
+        productoId = Model.ProductoId,
+        desde = Model.Desde,
+        hasta = Model.Hasta
+    });
+    var previousUrl = Url.Action(Model.Accion, controller, new
+    {
+        pageIndex = Math.Max(1, Model.PaginaIndice - 1),
+        itemsPorPagina = Model.ItemsPorPagina,
+        q = Model.Query,
+        productoId = Model.ProductoId,
+        desde = Model.Desde,
+        hasta = Model.Hasta
+    });
+    var nextUrl = Url.Action(Model.Accion, controller, new
+    {
+        pageIndex = Math.Min(Model.TotalPaginas, Model.PaginaIndice + 1),
+        itemsPorPagina = Model.ItemsPorPagina,
+        q = Model.Query,
+        productoId = Model.ProductoId,
+        desde = Model.Desde,
+        hasta = Model.Hasta
+    });
+    var lastUrl = Url.Action(Model.Accion, controller, new
+    {
+        pageIndex = Math.Max(1, Model.TotalPaginas),
+        itemsPorPagina = Model.ItemsPorPagina,
+        q = Model.Query,
+        productoId = Model.ProductoId,
+        desde = Model.Desde,
+        hasta = Model.Hasta
+    });
 }
 
-<nav aria-label="Paginación" class="pagination-container d-flex flex-wrap justify-content-between align-items-center gap-3 d-print-none mt-3">
+<nav aria-label="Paginación"
+     class="pagination-container d-flex flex-wrap justify-content-between align-items-center gap-3 d-print-none mt-3">
     <ul class="pagination pagination-sm mb-0">
         <li class="page-item @(Model.PaginaIndice <= 1 ? "disabled" : "")">
             <a class="page-link" href="@firstUrl" aria-label="Primera página"><i class="bi bi-chevron-bar-left"></i></a>
@@ -34,8 +67,7 @@
         <input type="hidden" name="pageIndex" value="1" />
 
         <label for="itemsPorPagina">Elementos por página:</label>
-        <input type="number" id="itemsPorPagina" name="itemsPorPagina"
-               class="form-control form-control-sm"
+        <input type="number" id="itemsPorPagina" name="itemsPorPagina" class="form-control form-control-sm"
                value="@Model.ItemsPorPagina" min="1" max="100" />
         <button type="submit" class="btn btn-primary btn-sm">Aplicar</button>
     </form>

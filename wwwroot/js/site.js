@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('[data-confirm]').forEach(el =>
@@ -58,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(
                 `${url}?id=${encodeURIComponent(productSelect.value)}`
 
-                
+
             );
             console.log(response);
 
